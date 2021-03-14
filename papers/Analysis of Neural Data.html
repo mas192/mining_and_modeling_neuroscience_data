@@ -1,0 +1,961 @@
+
+<!-- saved from url=(0035)https://www.stat.cmu.edu/~kass/KEB/ -->
+<html><!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title> Analysis of Neural Data </title>
+
+<link rev="made" href="mailto:@stat.cmu.edu">
+<link rel="stylesheet" href="./Analysis of Neural Data_files/style2.css" type="text/css" <="" head="">
+
+<!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+<script id="mew-web3script" type="application/javascript" async="false" src="chrome-extension://nlbmnnijcnlegkjjpcfjclmcfggfefdm/js/cxWeb3.js"></script><script type="application/javascript" async="false" id="mew-extensionId">(function(t){window.extensionID=t})("nlbmnnijcnlegkjjpcfjclmcfggfefdm")</script></head><body data-new-gr-c-s-check-loaded="14.998.0" data-gr-ext-installed="" sapling-installed="true">
+
+<h1> Analysis of Neural Data </h1>
+<p>
+</p><p>
+</p><h3> by Robert E.  Kass, Uri T. Eden, and Emery N. Brown </h3>
+
+
+
+<!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+
+<p> 
+Code (below)  was contributed by Elan Cohen, Uri Eden, Rob Kass, Spencer Koerner, and Ryan Sieberg.<br>  New versions of code were created and/or edited by Spencer Koerner and Patrick Foley. This website was created by Patrick Foley.  </p>
+
+
+<h2> Publisher's webpages: </h2>
+
+<ul> Springer webpages for the book may be found <a href="http://www.springer.com/statistics/life+sciences,+medicine+%26+health/book/978-1-4614-9601-4">  here. </a>      
+</ul>
+
+<!--<ul> Reviews on Springer webpage for the book may be found <a href="http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-9601-4?detailsPage=reviews">  here. </a>  -->  
+
+<ul> Reviews on Springer webpage for the book may be found <a href="https://www.springer.com/gp/book/9781461496014#reviews">here</a> 
+</ul>
+
+<!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+<b><font size="5"> Errors and Corrections:</font></b> 
+
+<ul> May be found <a href="https://www.stat.cmu.edu/~kass/KEB/corrections2019.pdf">here</a>. <br>
+
+<br>
+Corrections to first printing:
+
+
+  <ul>The publication process introduced so many errors that Springer agreed to do another printing right away. This gave us a chance to find some of our own errors, too.<br> Corrections may be found
+    <a href="https://www.stat.cmu.edu/~kass/KEB/KEB-edits-april2014.pdf">here.</a><br>
+    
+ 
+(Many figures were also re-done, to provide color when useful; we had 
+been unaware that color would be used in printing.)
+</ul>
+
+
+<!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+<!--<h2> R and Matlab resources: </h2>
+
+<ul>
+
+<li>  <a href="http://www.cran.r-project.org"> CRAN - download R and contributed packages </a>
+<li>  <a href="http://google-styleguide.googlecode.com/svn/trunk/google-r-style.html"> Google's style guide for R </a>
+<li> <a href="http://ess.r-project.org"> ESS - Emacs Speaks Statistics - for integrating Emacs and R </a>
+
+<li> <a href ="http://www.datatool.com/downloads/matlab_style_guidelines.pdf"> Richard Johnson's Matlab style guide </a>
+
+
+</ul>-->
+
+<!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+<h2> Data: </h2>
+
+<ul>
+<li> <a href="https://www.stat.cmu.edu/~kass/KEB/data/hipp_data.mat">  spike trains from a rat's hippocampus </a> - used in Chapter 14      </li>
+<li> <a href="https://www.stat.cmu.edu/~kass/KEB/data/lfp-ryan.dat">  local field potentials </a> - used in Chapter 18 </li>
+<li>  <a href="https://www.stat.cmu.edu/~kass/KEB/data/temp.dat"> core temperature of a human subject over 24 hours </a> - Used in Chapter 18 </li>
+<li>  <a href="https://www.stat.cmu.edu/~kass/KEB/data/m1counts.csv"> spike counts from a motor cortical neuron </a> - used in Chapter 3 </li>
+
+</ul>
+
+<!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+<h2> Matlab and R code for original figures in book is available below</h2><p>
+
+</p><p>
+
+<!--  Big line here.  -->
+</p><hr noshade="" size="4" color="black">
+
+<p>
+</p><hr noshade="" size="4" color="black">
+
+<p>
+
+
+<!--  Note:  The site isn't ending here.  buildSite.sh puts together the full site from 
+        this file and the output of the python script buildHTMLforTOC.py, which 
+        generates all the html for the figure images and google-code-prettified code.
+-->
+ </p><p> <a href="https://www.stat.cmu.edu/~kass/KEB/#1">1 - Introduction
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#2">2 - Exploring Data
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#3">3 - Probability and Random Variables
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#4">4 - Random Vectors
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#5">5 - Important Probability Distributions
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#6">6 - Sequences of Random Variables
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#7">7 - Estimation and Uncertainty
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#8">8 - Estimation in Theory and in Practice
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#9">9 - Propagation of Uncertainty and the Bootstrap
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#10">10 - Models, Hypotheses, and Statistical Significance
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#11">11 - General Methods for Testing Hypotheses
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#12">12 - Linear Regression
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#13">13 - Analysis of Variance
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#14">14 - Generalized Linear and Nonlinear Regression
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#15">15 - Nonparametric Regression
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#16">16 - Bayesian Methods
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#17">17 - Multivariate Analysis
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#18">18 - Time Series
+ </a> </p>
+ <p> <a href="https://www.stat.cmu.edu/~kass/KEB/#19">19 - Point Processes
+ </a> </p>
+ <h2> <a id="1">
+1 - Introduction
+
+ </a> </h2> <p> 
+</p><h3> Figure  1.4 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/hursh.r.html">
+    <img src="./Analysis of Neural Data_files/hurshR.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/hursh.m.html">
+    <img src="./Analysis of Neural Data_files/hurshMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/hursh.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/hursh.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+ <h2> <a id="2">
+2 - Exploring Data
+
+ </a> </h2> <p> 
+</p><h3> Figure  2.1 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/hemi.R.html">
+    <img src="./Analysis of Neural Data_files/hemi.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/hemiRev.m.html">
+    <img src="./Analysis of Neural Data_files/hemiRevMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/hemi.R.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/hemiRev.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<p>
+ </p><h3> Figure  2.2  </h3> 
+ <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/hemi2.R.html">
+                           <table class="image">
+                          <caption align="bottom"> R Code </caption>
+                          <tbody><tr> <td> <img src="./Analysis of Neural Data_files/hemi2.png" border="0" height="300" hspace="40"> </td> </tr> </tbody></table>
+                          </a>
+<p> </p><p>
+</p><p>
+ </p><h3> Figure  2.3  </h3> 
+ <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/hemi2.m.html">
+                           <table class="image">
+                          <caption align="bottom"> Matlab Code </caption>
+                          <tbody><tr> <td> <img src="./Analysis of Neural Data_files/hemi2Matlab.jpg" border="0" height="300" hspace="40"> </td> </tr> </tbody></table>
+                          </a>
+<p> </p><p>
+ </p><h2> <a id="3">
+3 - Probability and Random Variables
+
+ </a> </h2> <p> 
+</p><h3> Figure  3.2 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/counts.r.html">
+    <img src="./Analysis of Neural Data_files/m1counts.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/m1counts.m.html">
+    <img src="./Analysis of Neural Data_files/m1counts.png" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/counts.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/m1counts.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  3.3 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/4dens.r.html">
+    <img src="./Analysis of Neural Data_files/3.3.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/4dens.m.html">
+    <img src="./Analysis of Neural Data_files/4densMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/4dens.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/4dens.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  3.5 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/Fnorm.r.html">
+    <img src="./Analysis of Neural Data_files/Fnorm.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/Fnorm.m.html">
+    <img src="./Analysis of Neural Data_files/FnormMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/Fnorm.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/Fnorm.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  3.6 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/exp-fill.r.html">
+    <img src="./Analysis of Neural Data_files/3.6.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/expfill.m.html">
+    <img src="./Analysis of Neural Data_files/expfillMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/exp-fill.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/expfill.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  3.9 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/cdf.r.html">
+    <img src="./Analysis of Neural Data_files/3.9.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/ecdf.m.html">
+    <img src="./Analysis of Neural Data_files/ecdfMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/cdf.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/ecdf.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  3.11 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/qq.r.html">
+    <img src="./Analysis of Neural Data_files/3.11.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/qq.m.html">
+    <img src="./Analysis of Neural Data_files/qqMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/qq.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/qq.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  3.12 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/qqnorm.r.html">
+    <img src="./Analysis of Neural Data_files/3.12.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/qqnorm.m.html">
+    <img src="./Analysis of Neural Data_files/qqnormMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/qqnorm.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/qqnorm.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<p>
+ </p><h3> Figure  3.13  </h3> 
+ <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/behrmanQQ.m.html">
+                           <table class="image">
+                          <caption align="bottom"> Matlab Code </caption>
+                          <tbody><tr> <td> <img src="./Analysis of Neural Data_files/behrmanQQ.png" border="0" height="300" hspace="40"> </td> </tr> </tbody></table>
+                          </a>
+<p> </p><p>
+ </p><h2> <a id="4">
+4 - Random Vectors
+
+ </a> </h2> <p> 
+</p><h3> Figure  4.2 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/bivariateNormalPerspectives.r.html">
+    <img src="./Analysis of Neural Data_files/bivariateNormalRev.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/normal-persp.m.html">
+    <img src="./Analysis of Neural Data_files/normal-persp.png" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/bivariateNormalPerspectives.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/normal-persp.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  4.3 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/galton.r.html">
+    <img src="./Analysis of Neural Data_files/4.3.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/pearson-lee.m.html">
+    <img src="./Analysis of Neural Data_files/pearson-leeMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/galton.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/pearson-lee.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+ <h2> <a id="5">
+5 - Important Probability Distributions
+
+ </a> </h2> <p> 
+</p><h3> Figure  5.3 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/normbinom.r.html">
+    <img src="./Analysis of Neural Data_files/normbinom.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/normbinom.m.html">
+    <img src="./Analysis of Neural Data_files/normbinomMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/normbinom.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/normbinom.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  5.4 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/chisq.r.html">
+    <img src="./Analysis of Neural Data_files/chisq.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/chisq.m.html">
+    <img src="./Analysis of Neural Data_files/chisqMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/chisq.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/chisq.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  5.6 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/invgauss.r.html">
+    <img src="./Analysis of Neural Data_files/invgauss.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/invgauss.m.html">
+    <img src="./Analysis of Neural Data_files/invgaussMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/invgauss.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/invgauss.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+ <h2> <a id="6">
+6 - Sequences of Random Variables
+
+ </a> </h2> <p> 
+</p><h3> Figure  6.1 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/binom.r.html">
+    <img src="./Analysis of Neural Data_files/6.1.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/binclt.m.html">
+    <img src="./Analysis of Neural Data_files/bincltMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/binom.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/binclt.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+ <h2> <a id="7">
+7 - Estimation and Uncertainty
+
+ </a> </h2> <p> 
+</p><h3> Figure  7.2 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/for10.r.html">
+    <img src="./Analysis of Neural Data_files/for10.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/for10.m.html">
+    <img src="./Analysis of Neural Data_files/for10Matlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/for10.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/for10.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<p>
+ </p><h3> Figure  7.3  </h3> 
+ <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/rk2-ttest.m.html">
+                           <table class="image">
+                          <caption align="bottom"> Matlab Code </caption>
+                          <tbody><tr> <td> <img src="./Analysis of Neural Data_files/rk2-ttestMatlab.jpg" border="0" height="300" hspace="40"> </td> </tr> </tbody></table>
+                          </a>
+<p> </p><p>
+ </p><h2> <a id="8">
+8 - Estimation in Theory and in Practice
+
+ </a> </h2> <p> 
+</p><h3> Figure  8.2 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/xbar-s.r.html">
+    <img src="./Analysis of Neural Data_files/8.2.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/mean-var.m.html">
+    <img src="./Analysis of Neural Data_files/mean-varMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/xbar-s.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/mean-var.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  8.8 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/normbeta.r.html">
+    <img src="./Analysis of Neural Data_files/8.8.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/normbeta.m.html">
+    <img src="./Analysis of Neural Data_files/normbetaMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/normbeta.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/normbeta.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<p>
+ </p><h3> Figure  8.9  </h3> 
+ <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/hecht.r.html">
+                           <table class="image">
+                          <caption align="bottom"> R Code </caption>
+                          <tbody><tr> <td> <img src="./Analysis of Neural Data_files/hechtSS.png" border="0" height="300" hspace="40"> </td> </tr> </tbody></table>
+                          </a>
+<p> </p><p>
+ </p><h2> <a id="9">
+9 - Propagation of Uncertainty and the Bootstrap
+
+ </a> </h2> <p> 
+</p><h3> Figure  9.1 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/linear.r.html">
+    <img src="./Analysis of Neural Data_files/9.1.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/linear.m.html">
+    <img src="./Analysis of Neural Data_files/linearMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/linear.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/linear.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  9.2 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/log-transform.r.html">
+    <img src="./Analysis of Neural Data_files/9.2.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/log-transform.m.html">
+    <img src="./Analysis of Neural Data_files/log-transformMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/log-transform.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/log-transform.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+ <h2> <a id="10">
+10 - Models, Hypotheses, and Statistical Significance
+
+ </a> </h2> <p> 
+</p><p>
+ </p><h3> Figure  10.1  </h3> 
+ <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/rk-pvals.m.html">
+                           <table class="image">
+                          <caption align="bottom"> Matlab Code </caption>
+                          <tbody><tr> <td> <img src="./Analysis of Neural Data_files/rk-pvalsMatlab.jpg" border="0" height="300" hspace="40"> </td> </tr> </tbody></table>
+                          </a>
+<p> </p><p>
+</p><h3> Figure  10.3 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/roc.r.html">
+    <img src="./Analysis of Neural Data_files/roc.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/roc.m.html">
+    <img src="./Analysis of Neural Data_files/rocMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/roc.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/roc.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+ <h2> <a id="11">
+11 - General Methods for Testing Hypotheses
+
+ </a> </h2> <p> 
+ </p><h2> <a id="12">
+12 - Linear Regression
+
+ </a> </h2> <p> 
+</p><h3> Figure  12.2 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/hurshWithArrows.r.html">
+    <img src="./Analysis of Neural Data_files/hursh-res-mean.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/hursh-res-mean.m.html">
+    <img src="./Analysis of Neural Data_files/hursh-res-meanMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/hurshWithArrows.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/hursh-res-mean.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  12.5 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/anscombe.r.html">
+    <img src="./Analysis of Neural Data_files/anscombe.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/anscombe.m.html">
+    <img src="./Analysis of Neural Data_files/anscombeMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/anscombe.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/anscombe.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<p>
+ </p><h3> Figure  12.6  </h3> 
+ <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/autocorrelatedTimeSeriesSimulations.r.html">
+                           <table class="image">
+                          <caption align="bottom"> R Code </caption>
+                          <tbody><tr> <td> <img src="./Analysis of Neural Data_files/independentARseries.png" border="0" height="300" hspace="40"> </td> </tr> </tbody></table>
+                          </a>
+<p> </p><p>
+</p><h3> Figure  12.7 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/AR1plot.r.html">
+    <img src="./Analysis of Neural Data_files/AR1plot.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/AR1plot.m.html">
+    <img src="./Analysis of Neural Data_files/AR1plotMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/AR1plot.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/AR1plot.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+ <h2> <a id="13">
+13 - Analysis of Variance
+
+ </a> </h2> <p> 
+ </p><h2> <a id="14">
+14 - Generalized Linear and Nonlinear Regression
+
+ </a> </h2> <p> 
+</p><h3> Figure  14.1 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/ss1probit.r.html">
+    <img src="./Analysis of Neural Data_files/ss1probit.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/ss1probit.m.html">
+    <img src="./Analysis of Neural Data_files/ss1probitMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/ss1probit.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/ss1probit.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  14.4 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/hippocampal-poisson.r.html">
+    <img src="./Analysis of Neural Data_files/hippocampal-poisson.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/hippocampal-poisson.m.html">
+    <img src="./Analysis of Neural Data_files/hippocampal-poissonMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/hippocampal-poisson.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/hippocampal-poisson.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+ <h2> <a id="15">
+15 - Nonparametric Regression
+
+ </a> </h2> <p> 
+</p><h3> Figure  15.2 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/poly.r.html">
+    <img src="./Analysis of Neural Data_files/poly.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/poly.m.html">
+    <img src="./Analysis of Neural Data_files/polyMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/poly.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/poly.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  15.4 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/spline20.r.html">
+    <img src="./Analysis of Neural Data_files/spline20.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/spline20.m.html">
+    <img src="./Analysis of Neural Data_files/spline20Matlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/spline20.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/spline20.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  15.6 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/s5vs15.r.html">
+    <img src="./Analysis of Neural Data_files/s5vs15.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/s5vs15.m.html">
+    <img src="./Analysis of Neural Data_files/s5vs15Matlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/s5vs15.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/s5vs15.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  15.12 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/loctestf.r.html">
+    <img src="./Analysis of Neural Data_files/loctestf.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/loctestf.m.html">
+    <img src="./Analysis of Neural Data_files/loctestfMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/loctestf.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/loctestf.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+ <h2> <a id="16">
+16 - Bayesian Methods
+
+ </a> </h2> <p> 
+ </p><h2> <a id="17">
+17 - Multivariate Analysis
+
+ </a> </h2> <p> 
+ </p><h2> <a id="18">
+18 - Time Series
+
+ </a> </h2> <p> 
+</p><h3> Figure  18.1 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/figure18.1.r.html">
+    <img src="./Analysis of Neural Data_files/lfp-r.detrend.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/lfp-r.detrend.m.html">
+    <img src="./Analysis of Neural Data_files/lfp-r.detrendMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/figure18.1.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/lfp-r.detrend.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<p>
+ </p><h3> Figure  18.1  </h3> 
+ <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/5filt.m.html">
+                           <table class="image">
+                          <caption align="bottom"> Matlab Code </caption>
+                          <tbody><tr> <td> <img src="./Analysis of Neural Data_files/5filtMatlab.jpg" border="0" height="300" hspace="40"> </td> </tr> </tbody></table>
+                          </a>
+<p> </p><p>
+</p><h3> Figure  18.2 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/figure18.2.r.html">
+    <img src="./Analysis of Neural Data_files/figure18.2.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/temp2.m.html">
+    <img src="./Analysis of Neural Data_files/temp2Matlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/figure18.2.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/temp2.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  18.3 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/figure18.3.r.html">
+    <img src="./Analysis of Neural Data_files/figure18.3.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/temp.harm2.m.html">
+    <img src="./Analysis of Neural Data_files/temp.harm2Matlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/figure18.3.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/temp.harm2.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  18.4 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/figure18.4.r.html">
+    <img src="./Analysis of Neural Data_files/figure18.4.jpg" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/temp3.m.html">
+    <img src="./Analysis of Neural Data_files/temp3Matlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/figure18.4.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/temp3.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  18.5 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/figure18.5.r.html">
+    <img src="./Analysis of Neural Data_files/figure18.5.jpeg" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/lfp-r.logp1.m.html">
+    <img src="./Analysis of Neural Data_files/lfp-r.logp1Matlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/figure18.5.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/lfp-r.logp1.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  18.6 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/lfp-r.det.period.r.html">
+    <img src="./Analysis of Neural Data_files/18.6.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/lfp-r.det.period.m.html">
+    <img src="./Analysis of Neural Data_files/lfp-r.det.periodMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/lfp-r.det.period.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/lfp-r.det.period.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  18.7 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/temp.resids.ar.r.html">
+    <img src="./Analysis of Neural Data_files/temp.resids.ar.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/temp.resids.ar.m.html">
+    <img src="./Analysis of Neural Data_files/temp.resids.arMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/temp.resids.ar.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/temp.resids.ar.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  18.8 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/temp.ar2fit.r.html">
+    <img src="./Analysis of Neural Data_files/temp.ar2fit.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/temp.ar2fit.m.html">
+    <img src="./Analysis of Neural Data_files/temp.ar2fitMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/temp.ar2fit.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/temp.ar2fit.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  18.11 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/alias.r.html">
+    <img src="./Analysis of Neural Data_files/alias.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/alias.m.html">
+    <img src="./Analysis of Neural Data_files/aliasMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/alias.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/alias.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  18.12 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/dirichlet.r.html">
+    <img src="./Analysis of Neural Data_files/dirichlet.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/dirichlet.m.html">
+    <img src="./Analysis of Neural Data_files/dirichletMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/dirichlet.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/dirichlet.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  18.13 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/leakage.highdr.r.html">
+    <img src="./Analysis of Neural Data_files/leakage.highdr.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/leakage.highdr.m.html">
+    <img src="./Analysis of Neural Data_files/leakage.highdrMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/leakage.highdr.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/leakage.highdr.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  18.14 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/leakage.highdr2.r.html">
+    <img src="./Analysis of Neural Data_files/leakage.highdr2.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/leakage.highdr2.m.html">
+    <img src="./Analysis of Neural Data_files/leakage.highdr2Matlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/leakage.highdr2.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/leakage.highdr2.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  18.15 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/lfp-r.1ci.r.html">
+    <img src="./Analysis of Neural Data_files/lfp-r.1ci.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/lfp-r.1ci.m.html">
+    <img src="./Analysis of Neural Data_files/lfp-r.1ciMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/lfp-r.1ci.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/lfp-r.1ci.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+<h3> Figure  18.16 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/lfp-r.det.period2.r.html">
+    <img src="./Analysis of Neural Data_files/lfp-r.det.period2.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/lfp-r.det.period2.m.html">
+    <img src="./Analysis of Neural Data_files/lfp-r.det.period2Matlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/lfp-r.det.period2.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/lfp-r.det.period2.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+ <h2> <a id="19">
+19 - Point Processes
+
+ </a> </h2> <p> 
+</p><h3> Figure  19.9 </h3>
+
+<table class="image">
+
+<tbody><tr><td> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/IGhaz.plot.r.html">
+    <img src="./Analysis of Neural Data_files/IGhaz.plot.png" border="0" height="300" hspace="40"></a></td>
+<td></td>
+    <td> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/IGhaz.plot.m.html">
+    <img src="./Analysis of Neural Data_files/IGhaz.plotMatlab.jpg" border="0" height="300"></a></td>
+</tr>
+<tr><td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/RHTML/R/IGhaz.plot.r.html">         R Code </a> </center> </td>
+<td></td>
+<td> <center> <a href="https://www.stat.cmu.edu/~kass/KEB/MatlabHTML/Matlab/IGhaz.plot.m.html">         Matlab Code </a> </center> </td>
+</tr>
+</tbody></table>
+
+
+
+
+
+</ul></body></html>
